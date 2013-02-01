@@ -104,15 +104,40 @@ regular expression::
 	(.+)	// matches ANYTHING
 	(:any)	// matches any character, except for '/'
 
+*******************************************
+Step 9: Update your librararies' file names
+*******************************************
+
+CodeIgniter 3.0 only allows library file names to be named in a *ucfirst* manner
+(meaning that the first letter of the class name must be a capital). For example,
+if you have the following library file:
+
+	application/libraries/mylibrary.php
+
+... then you'll have to rename it to:
+
+	application/libraries/Mylibrary.php
+
+The same goes for driver libraries and extensions and/or overrides of CodeIgniter's
+own libraries and core classes.
+
+	application/libraries/MY_email.php
+	application/core/MY_log.php
+
+The above files should respectively be renamed to the following:
+
+	application/libraries/MY_Email.php
+	application/core/MY_Log.php
+
 ****************************************************************************
-Step 9: Check the calls to Array Helper's element() and elements() functions
+Step 10: Check the calls to Array Helper's element() and elements() functions
 ****************************************************************************
 
 The default return value of these functions, when the required elements
 don't exist, has been changed from FALSE to NULL.
 
 *************************************************************
-Step 10: Update usage of Database Forge's drop_table() method
+Step 11: Update usage of Database Forge's drop_table() method
 *************************************************************
 
 Up until now, ``drop_table()`` added an IF EXISTS clause by default or it didn't work
@@ -134,10 +159,10 @@ If your application relies on IF EXISTS, you'll have to change its usage.
 	all drivers with the exception of ODBC.
 
 ***********************************************************
-Step 11: Change usage of Email library with multiple emails
+Step 12: Change usage of Email library with multiple emails
 ***********************************************************
 
-The :doc:`Email library </libraries/email>` will automatically clear the
+The :doc:`Email Library <../libraries/email>` will automatically clear the
 set parameters after successfully sending emails. To override this behaviour,
 pass FALSE as the first parameter in the ``send()`` method:
 
@@ -148,13 +173,43 @@ pass FALSE as the first parameter in the ``send()`` method:
  		// Parameters won't be cleared
  	}
 
+***************************************************
+Step 13: Update your Form_validation language lines
+***************************************************
+
+Two improvements have been made to the :doc:`Form Validation Library
+<../libraries/form_validation>`'s :doc:`language <../libraries/language>`
+files and error messages format:
+
+ - :doc:`Language Library <../libraries/language>` line keys now must be
+   prefixed with **form_validation_** in order to avoid collisions::
+
+	// Old
+	$lang['rule'] = ...
+
+	// New
+	$lang['form_validation_rule'] = ...
+
+ - The error messages format has been changed to use named parameters, to
+   allow more flexibility than what `sprintf()` offers::
+
+	// Old
+	'The %s field does not match the %s field.'
+
+	// New
+	'The {field} field does not match the {param} field.'
+
+.. note:: The old formatting still works, but the non-prefixed line keys
+	are DEPRECATED and scheduled for removal in CodeIgniter 3.1+.
+	Therefore you're encouraged to update its usage sooner rather than
+	later.
 
 ****************************************************************
-Step 12: Remove usage of (previously) deprecated functionalities
+Step 14: Remove usage of (previously) deprecated functionalities
 ****************************************************************
 
-In addition to the ``$autoload['core']`` configuration setting, there's a number of other functionalities
-that have been removed in CodeIgniter 3.0.0:
+In addition to the ``$autoload['core']`` configuration setting, there's a
+number of other functionalities that have been removed in CodeIgniter 3.0.0:
 
 The SHA1 library
 ================
@@ -272,10 +327,21 @@ CodeIgniter 3.1+.
 .. note:: This setting is still available, but you're strongly encouraged to remove its' usage sooner
 	rather than later.
 
+String helper random_string() types 'unique' and 'encrypt'
+==========================================================
+
+When using the :doc:`String Helper <../helpers/string_helper>` function :php:func:`random_string()`,
+you should no longer pass the **unique** and **encrypt** randomization types. They are only
+aliases for **md5** and **sha1** respectively and are now deprecated and scheduled for removal
+in CodeIgniter 3.1+.
+
+.. note:: These options are still available, but you're strongly encouraged to remove their usage
+	sooner rather than later.
+
 URL helper url_title() separators 'dash' and 'underscore'
 =========================================================
 
-When using the :doc:`URL Helper </helpers/url_helper>` function :php:func:`url_title()`, you
+When using the :doc:`URL Helper <../helpers/url_helper>` function :php:func:`url_title()`, you
 should no longer pass **dash** or **underscore** as the word separator. This function will
 now accept any character and you should just pass the chosen character directly, so you
 should write '-' instead of 'dash' and '_' instead of 'underscore'.
@@ -303,7 +369,7 @@ removal in CodeIgniter 3.1.+
 Database Forge method add_column() with an AFTER clause
 =======================================================
 
-If you have used the **third parameter** for :doc:`Database Forge </database/forge>` method
+If you have used the **third parameter** for :doc:`Database Forge <../database/forge>` method
 ``add_column()`` to add a field for an AFTER clause, then you should change its usage.
 
 That third parameter has been deprecated and scheduled for removal in CodeIgniter 3.1+.

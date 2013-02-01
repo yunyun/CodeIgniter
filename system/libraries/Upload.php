@@ -18,7 +18,7 @@
  *
  * @package		CodeIgniter
  * @author		EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2012, EllisLab, Inc. (http://ellislab.com/)
+ * @copyright	Copyright (c) 2008 - 2013, EllisLab, Inc. (http://ellislab.com/)
  * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * @link		http://codeigniter.com
  * @since		Version 1.0
@@ -463,7 +463,8 @@ class CI_Upload {
 		}
 
 		// Sanitize the file name for security
-		$this->file_name = $this->clean_file_name($this->file_name);
+		$CI =& get_instance();
+		$this->file_name = $CI->security->sanitize_filename($this->file_name);
 
 		// Truncate the file name if it's too long
 		if ($this->max_filename > 0)
@@ -966,46 +967,6 @@ class CI_Upload {
 	{
 		$x = explode('.', $filename);
 		return (count($x) !== 1) ? '.'.end($x) : '';
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Clean the file name for security
-	 *
-	 * @param	string	$filename
-	 * @return	string
-	 */
-	public function clean_file_name($filename)
-	{
-		$bad = array(
-				'<!--', '-->',
-				"'", '"',
-				'<', '>',
-				'&', '$',
-				'=',
-				';',
-				'?',
-				'/',
-				'!',
-				'#',
-				'%20',
-				'%22',
-				'%3c',		// <
-				'%253c',	// <
-				'%3e',		// >
-				'%0e',		// >
-				'%28',		// (
-				'%29',		// )
-				'%2528',	// (
-				'%26',		// &
-				'%24',		// $
-				'%3f',		// ?
-				'%3b',		// ;
-				'%3d'		// =
-			);
-
-		return stripslashes(str_replace($bad, '', $filename));
 	}
 
 	// --------------------------------------------------------------------

@@ -18,7 +18,7 @@
  *
  * @package		CodeIgniter
  * @author		EllisLab Dev Team
- * @copyright	Copyright (c) 2006 - 2012, EllisLab, Inc. (http://ellislab.com/)
+ * @copyright	Copyright (c) 2006 - 2013, EllisLab, Inc. (http://ellislab.com/)
  * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * @link		http://codeigniter.com
  * @since		Version 1.0
@@ -95,7 +95,7 @@ class CI_Cart {
 		$config = is_array($params) ? $params : array();
 
 		// Load the Sessions class
-		$this->CI->load->library('session', $config);
+		$this->CI->load->driver('session', $config);
 
 		// Grab the shopping cart array from the session table
 		$this->_cart_contents = $this->CI->session->userdata('cart_contents');
